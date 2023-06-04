@@ -21,12 +21,36 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
     } else {
       console.log(store.getters.roles)
-      
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完用户信息
+        
+          var roles ="";
+          if(token==='root') {
+            console.log('admin')
+            roles='admin'
+            try{
+            store.commit('SET_ROLES', ['admin'])
+            }catch(e){
+              console.log(e)
+            }
+
+          }
+          else {
+            roles = 'editor'
+            store.commit('SET_ROLES', ['editor'])
+          }
+          store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+            console.log(store.getters.addRouters)
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            router.options.isAddAsyncMenuData=true;
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
+      } else {
         if (hasPermission(store.getters.roles, to.meta.roles)) { // 动态权限匹配
           next();
         } else {
           next({ path: '/401', replace: true, query: { noGoBack: true } });
         }
+      }
     }
   } else { // 没有token
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入

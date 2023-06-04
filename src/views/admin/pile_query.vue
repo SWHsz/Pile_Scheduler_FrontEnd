@@ -210,7 +210,7 @@
       },
       Query_queue () {
         console.log("Query_queue_Success");
-        const apiUrl = 'https://0b691035-2a65-4e1e-9105-7a6c2b4771aa.mock.pstmn.io/api';
+        const apiUrl = '/api/user/query/queue';
         const params = {
           user_id: this.user_id,
           car_id: this.car_id
@@ -246,12 +246,18 @@
       },
       Query_bill () {
         console.log("Query_bill_Success");
-        const apiUrl = 'https://0b691035-2a65-4e1e-9105-7a6c2b4771aa.mock.pstmn.io/api1';
+        const apiUrl = '/api/user/query/bill';
         const params = {
           user_id: this.user_id,
           bill_id: this.bill_id
         };
-        axios.get(apiUrl, { params })// 无法使用则修改为 data: params
+        axios(
+          {
+            url: apiUrl,
+            method: 'get',
+            params: params
+          }
+        )
         .then(response => {
           console.log(response.status);
           if (response.status === 200) {
@@ -292,7 +298,7 @@
       },
       Query_User_info () {
         console.log("Query_User_info_Success");
-        const apiUrl = 'https://0b691035-2a65-4e1e-9105-7a6c2b4771aa.mock.pstmn.io/api2';
+        const apiUrl = '/api/user/query/profile';
         const params = {
           user_id: this.user_id2,
         };

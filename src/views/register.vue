@@ -77,15 +77,23 @@ export default {
             this.$refs.ruleForm.validate(valid => {
                 if (valid && this.ruleForm.password === this.ruleForm.confirmPassword) {
                     axios.post('/api/register', {username:this.ruleForm.username,password:this.ruleForm.password}).then(res => {
-                        console.log(res.data.errCode);
-                        
+                        console.log(res);
+                        if(res.data.status=="0")
+{                    
                             console.log('success');
                             this.$message({
                                 message: "注册成功",
                                 type: "success"
                             });
                             this.$router.push('/login');
-                        
+
+                        }                        
+                        else {
+                            this.$message({
+                        message: "用户名已存在",
+                        type: "error"
+                    });
+                        }
                     }).
                     catch(err => {
                         console.log("error");

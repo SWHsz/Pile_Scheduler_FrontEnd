@@ -90,7 +90,7 @@
     methods: {
       onSubmit(start, end) {
         console.log("onSubmit");
-        const apiUrl = 'https://6cc561c5-f4d2-4668-88f2-c9e97e7aa76f.mock.pstmn.io';
+        const apiUrl = '/api/admin/query/report';
         const params = {
           start: this.formInline.data.start,
           end: this.formInline.data.end

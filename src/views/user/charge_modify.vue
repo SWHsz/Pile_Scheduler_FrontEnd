@@ -72,7 +72,7 @@ export default {
     submitMode() {
       if (this.ruleForm.userID !== '' && this.ruleForm.carID !== '' && this.ruleForm.mode !== '') {
         axios({
-          url: '/user/alter/mode',
+          url: '/api/user/alter/mode',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
             user_id: this.ruleForm.userID,
@@ -104,7 +104,7 @@ export default {
     submitMount() {
       if (this.ruleForm.userID !== '' && this.ruleForm.carID !== '' && this.ruleForm.mount !== '') {
         axios({
-          url: '/user/alter/amount',
+          url: '/api/user/alter/amount',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
             user_id: this.ruleForm.userID,
@@ -137,13 +137,13 @@ export default {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           axios({
-            url: '/user/charge',
+            url: '/api/user/charge',
             // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
             data: {
               user_id: this.ruleForm.userID,
               car_id: this.ruleForm.carID,
               mode: this.ruleForm.mode,
-              mount: this.ruleForm.mount
+              amount: this.ruleForm.mount
             },
             method: 'post'
           }).then(res => {

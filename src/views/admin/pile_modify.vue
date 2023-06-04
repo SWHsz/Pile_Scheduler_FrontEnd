@@ -163,7 +163,13 @@
         this.showList = false;
         this.ShowError = false;
         this.ShowStatus = true;
-        axios.post(apiUrl, { params })// 无法使用则修改为 data: params
+        axios(
+          {
+            method: 'post',
+            url: apiUrl,
+            data: params
+          }
+        )// 无法使用则修改为 data: params
         .then(response => {
           if (response.status === 0) {
             this.ResMessage = "修改成功";
