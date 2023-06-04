@@ -9,6 +9,7 @@ import pile_query from '@/views/admin/pile_query';
 import report_query from '@/views/admin/report_query';
 import charge_modify from '@/views/user/charge_modify';
 // import charge_cancel from '@/views/user/charge_cancel';
+import charge_query_detail from '@/views/user/charge_query_detail';
 import charge_query from '@/views/user/charge_query';
 export const constantRouterMap = [
   { path: '/login', name: 'login', meta: { title: "系统登录", hidden: true }, component: login },
@@ -38,7 +39,8 @@ export const asyncRouterMap = [
     component: layout,
     children: [
       {path:'modify',name:'modify',meta:{title:'管理充电请求',icon:'dbm d-icon-zujian'},component:charge_modify},
-      {path:'query',name:'query',meta:{title:'查询充电信息',icon:'dbm d-icon-zujian'},component:charge_query},
+      {path:'query',name:'query',meta:{title:'查询排队信息',icon:'dbm d-icon-zujian'},component:charge_query},
+      {path:"query_charge",name:"query_charge",meta:{title:"查询充电信息",icon:"dbm d-icon-zujian"},component:charge_query_detail},
     ]
   },
   {
