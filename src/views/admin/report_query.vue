@@ -100,7 +100,7 @@
           if (start === '' || end === '') {
             this.$message("请输入时间");
           } else
-          if (response.status === 200) {
+          if (response.data.status === 0) {
             console.log("2Success");
             const responseData = response.data.data;
             this.formInline.data.start = responseData.start;

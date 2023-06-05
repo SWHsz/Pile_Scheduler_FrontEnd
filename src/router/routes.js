@@ -5,7 +5,6 @@ import page404 from '@/views/error-page/404';
 import page401 from '@/views/error-page/401';
 import register from '@/views/register';
 import pile_modify from '@/views/admin/pile_modify';
-import pile_query from '@/views/admin/pile_query';
 import report_query from '@/views/admin/report_query';
 import charge_modify from '@/views/user/charge_modify';
 // import charge_cancel from '@/views/user/charge_cancel';
@@ -27,7 +26,6 @@ export const asyncRouterMap = [
     meta: { title: "系统管理", icon: "dbm d-icon-zujian" ,roles:['admin']},
     component: layout,
     children: [
-      {path:'pile_query',name:'pile_query',meta:{title:'查询充电桩信息',icon:'dbm d-icon-zujian'},component:pile_query},
       {path:'pile_modify',name:'pile_modify',meta:{title:'修改充电桩信息',icon:'dbm d-icon-zujian'},component:pile_modify},
       {path:'report_query',name:'report_query',meta:{title:'查询报表',icon:'dbm d-icon-zujian'},component:report_query},
     ]

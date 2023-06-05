@@ -139,7 +139,7 @@
         axios.get(apiUrl, { params })// 无法使用则修改为 data: params
         .then(response => {
           console.log(response.status);
-          if (response.status === 200) {
+          if (response.data.status === 0) {
             this.ShowTable = true;
             this.ShowRequest = false;
             console.log(response.data.data);
@@ -159,6 +159,12 @@
               }
             ];
           }
+          else{
+            this.$message({
+                          message: response.data.message,
+                          type: "error"
+                        });
+          }
         })
         .catch(error => {
           console.log(error);
@@ -168,20 +174,26 @@
         console.log("Query_Request_Success");
         const apiUrl = '/api/user/query/request';
         const params = {
-          user_id: this.user_id,
+          user_id: this.user_id2,
         };
         axios.get(apiUrl, { params })// 无法使用则修改为 data: params
         .then(response => {
           console.log(response.status);
-          console.log(response.data.data);
-          if (response.status === 200) {
+          console.log(response);
+          if (response.data.status === 0) {
             this.ShowTable = false;
             this.ShowRequest = true;
             this.tableData = response.data.data.map(item => {
               return {
-                car_id: item.car_id,
+                car_id: item,
               };
             })
+          }
+          else{
+            this.$message({
+                          message: response.data.message,
+                          type: "error"
+                        });
           }
         })
         .catch(error => {

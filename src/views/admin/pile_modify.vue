@@ -29,7 +29,6 @@
           <el-col :span = "24">
             <el-radio v-model="radio" label="0">关闭</el-radio>
             <el-radio v-model="radio" label="1">开启</el-radio>
-            <el-radio v-model="radio" label="2">故障</el-radio>
           </el-col>
         </el-row>
 
@@ -155,9 +154,12 @@
       Modify () {
         console.log("Modify_Success");
         const apiUrl = '/api/admin/alter/pile';
+        var tmp = 0;
+        if(this.radio === "1")
+          tmp=1;
         const params = {
           pile_id: this.pileID,
-          radio: this.radio
+          status: tmp
         };
         this.showTable = false;
         this.showList = false;
@@ -171,7 +173,7 @@
           }
         )// 无法使用则修改为 data: params
         .then(response => {
-          if (response.status === 0) {
+          if (response.data.status === 0) {
             this.ResMessage = "修改成功";
             // console.log(this.ShowStatus);
             // console.log(this.ResMessage);
@@ -197,7 +199,7 @@
         .then(response => {
           console.log(response.data.data.status);
           console.log(response.data.data.car);
-          if (response.status === 200) {
+          if (response.data.status === 0) {
             this.tableData = response.data.data.map(item => {
               return {
                 user_id: item.user_id,
@@ -210,7 +212,6 @@
             this.showList = false;
             this.ShowError = true;
             this.errorMessage = "token已过期";
-            console.log("FUCK YOU");
           }
         })
         .catch(error => {
@@ -230,15 +231,15 @@
           this.showTable = true;
           this.ShowError = false;
           this.ShowStatus = false;
-          if (response.status === 200) {
-            this.tableData = response.data.map(item => {
-              return {
-                pile_id: item.pile_id,
-                status: item.status,
-                amount: item.amount,
-                time: item.time
-              };
-            })
+          if (response.data.status === 0) {
+            this.tableData = [
+            {
+                pile_id: response.data.data.pile_id,
+                status: response.data.data.status,
+                amount: response.data.data.amount,
+                time: response.data.data.time
+              }
+            ];
           } else {
             this.showList = false;
             this.showTable = false;

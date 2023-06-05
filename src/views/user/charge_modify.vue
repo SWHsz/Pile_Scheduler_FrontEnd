@@ -171,7 +171,7 @@ export default {
     submitCancel() {
       if (this.ruleForm.userID !== '' && this.ruleForm.carID !== ''){
         axios({
-          url: '/user/alter/cancel',
+          url: '/api/user/alter/cancel',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
             user_id: this.ruleForm.userID,

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <div class="request">
+  <div>
     <el-row>
       <el-col :span="24">
         <!-- 表单 -->
@@ -11,7 +11,7 @@
         <el-col :span = "3">
           <el-input v-model="car_id" placeholder="请输入car_id" style="width: 100%; display: inline-block;"></el-input>
         </el-col>  
-        <el-col :span = "5">
+        <el-col :span = "3">
             <el-button type="primary" @click="Query_queue()" style="display: inline-block;">查询排队信息</el-button>
         </el-col>
         <el-col :span = "3">
@@ -20,15 +20,23 @@
         <el-col :span = "3">
           <el-input v-model="bill_id" placeholder="请输入账单id" style="width: 100%"></el-input>
         </el-col>
-        <el-col :span = "5">
+        <el-col :span = "3">
             <el-button type="primary" @click="Query_bill()">查询账单</el-button>
         </el-col>
+        
+        <el-col :span = "3">
+          <el-input v-model="user_id3" placeholder="请输入用户id" style="width: 100%"></el-input>
+        </el-col>
+        <el-col :span = "3">
+            <el-button type="primary" @click="Query_User_info()">查询用户信息</el-button>
+        </el-col>
+
         </el-form>
       </el-col>
     </el-row>
-</div>
-<br/>
-<div class="tables">
+  </div>
+  <br/>
+  <div>
     <el-row>
       <el-col :span="24">
         <!--排队信息 表格 -->
@@ -59,6 +67,7 @@
         <!-- List 表格 -->
         <el-table :data="tableData" v-if="ShowBill" border style="width: 100%">
           <el-table-column type="selection"></el-table-column>
+          <el-table-column prop="bill_id" label="账单id" ></el-table-column>
           <el-table-column prop="status" label="账单状态" >
           <template slot-scope="scope">
               <span>{{ get_Bill_Status(scope.row.status) }}</span>
@@ -82,10 +91,27 @@
         <p v-if="ShowBillError" class="error-message">{{ "账单不存在" }}</p>
       </el-col>
     </el-row>
-</div>
-</div>
+
+    <el-row>
+      <el-col :span="24">      
+        <el-table :data="billData" v-if="Showuserinfo" border style="width: 100%">
+          <el-table-column prop="id" label="账单id"></el-table-column>
+          <el-table-column prop="date" label="日期"></el-table-column>
+          <el-table-column prop="cost" label="花费"></el-table-column>
+          <el-table-column prop="bill" label="账单"></el-table-column>
+        </el-table>
+        <!-- 错误提示 -->
+        <p v-if="ShowError" class="error-message">{{ QueueMessage }}</p>
+      </el-col>
+    </el-row>
+  </div>   
+  </div>
 </template>
 <style scoped>
+.container {
+  padding: 20px;
+}
+
 .demo-form-inline .el-form-item {
   margin-right: 10px;
 }
@@ -108,7 +134,9 @@ export default {
       car_id: '',
       user_id2: '',
       bill_id: '',
+      user_id3: '',
       tableData: [],
+      billData: [],
       formInline2: {
         user: {
           name: '',
@@ -132,6 +160,7 @@ export default {
       ResMessage: '',
       QueueMessage: '',
       ShowTable: false,
+      Showuserinfo: false,
     };
   },
   methods: {
@@ -189,11 +218,12 @@ export default {
       axios.get(apiUrl, { params })// 无法使用则修改为 data: params
       .then(response => {
         console.log(response.status);
-        if (response.status === 200) {
+        if (response.data.status === 0) {
           this.ShowTable = true;
           this.ShowError = false;
           this.ShowBill = false;
           this.ShowBillError = false;
+          this.Showuserinfo = false;
           this.tableData = [
             {
               car_id: response.data.data.car_id,
@@ -206,6 +236,7 @@ export default {
         } else {
           this.ShowTable = false;
           this.ShowError = true;
+          this.Showuserinfo = false;
           this.QueueMessage = "车辆不存在";
         }
       })
@@ -217,17 +248,25 @@ export default {
       console.log("Query_bill_Success");
       const apiUrl = '/api/user/query/bill';
       const params = {
-        user_id: this.user_id,
+        user_id: this.user_id2,
         bill_id: this.bill_id
       };
-      axios.get(apiUrl, { params })// 无法使用则修改为 data: params
+      axios(
+        {
+          url: apiUrl,
+          method: 'get',
+          params: params
+        }
+      )
       .then(response => {
         console.log(response.status);
-        if (response.status === 200) {
+        if (response.data.status === 0) {
           this.ShowBill = true;
           this.ShowTable = false;
           this.ShowError = false;
           this.ShowBillError = false;
+          this.Showuserinfo = false;
+          console.log(response.data.data)
           this.tableData = [
             {
               bill_id: response.data.data.bill_id,
@@ -249,7 +288,46 @@ export default {
           this.ShowTable = false;
           this.ShowBill = false;
           this.ShowError = false;
+          this.Showuserinfo = false;
           this.ShowBillError = true;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+    Query_User_info () {
+      console.log("Query_User_info_Success");
+      const apiUrl = '/api/user/query/profile';
+      const params = {
+        user_id: this.user_id3,
+      };
+      axios.get(apiUrl, { params })// 无法使用则修改为 data: params
+      .then(response => {
+        console.log(response);
+        if (response.data.status === 0) {
+          this.ShowTable = false;
+          this.ShowError = false;
+          this.ShowBill = false;
+          this.ShowBillError = false;
+          this.Showuserinfo = true;
+            
+          this.billData = response.data.data.bill.map(item => {
+            return {
+              id: item.id,
+              date: item.date,
+              cost: item.cost
+            };
+          })
+          this.tableData = [
+            {
+              user_id: response.data.data.user_id,
+            }
+          ];
+        } else {
+          this.ShowTable = false;
+          this.ShowError = true;
+          this.QueueMessage = response.data.message;
         }
       })
       .catch(error => {
