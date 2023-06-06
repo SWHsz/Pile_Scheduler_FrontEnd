@@ -69,7 +69,7 @@
           <el-table-column prop="amount" label="总电量"></el-table-column>
           <el-table-column prop="mode" label="充电模式">
             <template slot-scope="scope">
-              <span>{{ get_Bill_Mode(scope.row.status) }}</span>
+              <span>{{ get_Bill_Mode(scope.row.mode) }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="pile" label="充电桩id"></el-table-column>
@@ -261,19 +261,19 @@ export default {
           console.log(response.data.data)
           this.tableData = [
             {
-              bill_id: response.data.data.bill_id,
-              status: response.data.data.status,
-              date: response.data.data.date,
+              bill_id: response.data.data.id,
+              status: response.data.data.detail[0].status,
+              date: response.data.data.detail[0].date,
               car: response.data.data.car,
-              amount: response.data.data.detail.amount,
-              duration: response.data.data.detail.duration,
-              mode: response.data.data.detail.mode,
-              pile: response.data.data.detail.pile,
-              start_time: response.data.data.detail.start_time,
-              end_time: response.data.data.detail.end_time,
-              service: response.data.data.cost.service,
-              charge: response.data.data.cost.charge,
-              total: response.data.data.cost.total,
+              amount: response.data.data.detail[0].amount,
+              duration: response.data.data.detail[0].duration,
+              mode: response.data.data.detail[0].mode,
+              pile: response.data.data.detail[0].pile,
+              start_time: response.data.data.detail[0].start_time,
+              end_time: response.data.data.detail[0].end_time,
+              charge: response.data.data.detail[0].charge,
+              total: response.data.data.detail[0].total,
+              service: response.data.data.detail[0].service,
             }
           ];
         } else {
