@@ -6,9 +6,9 @@
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
             
             <el-form-item label="报表查询">
-              <el-input v-model="formInline.data.start" placeholder="开始日期" style="width: 140px;"></el-input>
+              <el-date-picker v-model="formInline.data.start" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" placeholder="开始日期" style="width: 300px;"></el-date-picker>
               ~
-              <el-input v-model="formInline.data.end" placeholder="结束日期" style="width: 140px;"></el-input>
+              <el-date-picker v-model="formInline.data.end" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" placeholder="结束日期" style="width: 300px;"></el-date-picker>
             </el-form-item>
             <el-button type="primary" @click="onSubmit(formInline.data.start, formInline.data.end)">查询</el-button>
             <!-- <a href="javascript:;" id="download" style="background-color:#409EFF;color: #fff;padding: 12px 10px!important;margin-left: 10px!important;border-radius:4px " @click="download()" download="download.csv">导出数据</a> -->

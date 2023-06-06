@@ -1,9 +1,6 @@
 <template>
   <section class="form-section">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="用户ID"  prop="userID">
-        <el-input  v-model="ruleForm.userID"></el-input>
-      </el-form-item>
       <el-form-item label="车辆ID"  prop="carID">
         <el-input  v-model="ruleForm.carID"></el-input>
       </el-form-item>
@@ -39,6 +36,7 @@
   </section>
 </template>
 <script>
+import {getToken} from '@/utils/auth';
 import axios from 'axios';
 export default {
   data() {
@@ -70,12 +68,12 @@ export default {
   },
   methods: {
     submitMode() {
-      if (this.ruleForm.userID !== '' && this.ruleForm.carID !== '' && this.ruleForm.mode !== '') {
+      if (this.ruleForm.carID !== '' && this.ruleForm.mode !== '') {
         axios({
           url: '/api/user/alter/mode',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
-            user_id: this.ruleForm.userID,
+            user_id: getToken(),
             car_id: this.ruleForm.carID,
             mode: this.ruleForm.mode,
           },
@@ -102,12 +100,12 @@ export default {
       }
     },
     submitMount() {
-      if (this.ruleForm.userID !== '' && this.ruleForm.carID !== '' && this.ruleForm.mount !== '') {
+      if (this.ruleForm.carID !== '' && this.ruleForm.mount !== '') {
         axios({
           url: '/api/user/alter/amount',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
-            user_id: this.ruleForm.userID,
+            user_id: getToken(),
             car_id: this.ruleForm.carID,
             mount: this.ruleForm.mount,
           },
@@ -140,7 +138,7 @@ export default {
             url: '/api/user/charge',
             // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
             data: {
-              user_id: this.ruleForm.userID,
+              user_id: getToken(),
               car_id: this.ruleForm.carID,
               mode: this.ruleForm.mode,
               amount: this.ruleForm.mount
@@ -169,12 +167,12 @@ export default {
       })
     },
     submitCancel() {
-      if (this.ruleForm.userID !== '' && this.ruleForm.carID !== ''){
+      if (this.ruleForm.carID !== ''){
         axios({
           url: '/api/user/alter/cancel',
           // url: 'https://607daafc-16fc-42a7-9928-53eb7b5b6cad.mock.pstmn.io/api',
           data: {
-            user_id: this.ruleForm.userID,
+            user_id: getToken(),
             car_id: this.ruleForm.carID,
           },
           method: 'post'

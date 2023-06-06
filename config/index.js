@@ -13,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:10443',// 要跨域的域名
+        target: 'http://26.26.26.1:10443',// 要跨域的域名
         changeOrigin: true, // 是否开启跨域
         pathRewrite: {
             '^/api': '/'

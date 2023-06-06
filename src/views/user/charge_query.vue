@@ -6,16 +6,10 @@
         <!-- 表单 -->
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-col :span = "3">
-          <el-input v-model="user_id" placeholder="请输入user_id" style="width: 100%; display: inline-block;"></el-input>
-        </el-col>
-        <el-col :span = "3">
           <el-input v-model="car_id" placeholder="请输入car_id" style="width: 100%; display: inline-block;"></el-input>
         </el-col>  
         <el-col :span = "3">
             <el-button type="primary" @click="Query_queue()" style="display: inline-block;">查询排队信息</el-button>
-        </el-col>
-        <el-col :span = "3">
-          <el-input v-model="user_id2" placeholder="请输入用户id" style="width: 100%"></el-input>
         </el-col>
         <el-col :span = "3">
           <el-input v-model="bill_id" placeholder="请输入账单id" style="width: 100%"></el-input>
@@ -24,9 +18,6 @@
             <el-button type="primary" @click="Query_bill()">查询账单</el-button>
         </el-col>
         
-        <el-col :span = "3">
-          <el-input v-model="user_id3" placeholder="请输入用户id" style="width: 100%"></el-input>
-        </el-col>
         <el-col :span = "3">
             <el-button type="primary" @click="Query_User_info()">查询用户信息</el-button>
         </el-col>
@@ -98,7 +89,7 @@
           <el-table-column prop="id" label="账单id"></el-table-column>
           <el-table-column prop="date" label="日期"></el-table-column>
           <el-table-column prop="cost" label="花费"></el-table-column>
-          <el-table-column prop="bill" label="账单"></el-table-column>
+          <el-table-column prop="car_id" label="车辆id"></el-table-column>
         </el-table>
         <!-- 错误提示 -->
         <p v-if="ShowError" class="error-message">{{ QueueMessage }}</p>
@@ -126,6 +117,7 @@
 }
 </style>  
 <script type="text/ecmascript-6">
+import {getToken} from '@/utils/auth';
 import axios from 'axios';
 export default {
   data () {
@@ -212,7 +204,7 @@ export default {
       console.log("Query_queue_Success");
       const apiUrl = '/api/user/query/queue';
       const params = {
-        user_id: this.user_id,
+        user_id: getToken(),
         car_id: this.car_id
       };
       axios.get(apiUrl, { params })// 无法使用则修改为 data: params
@@ -248,7 +240,7 @@ export default {
       console.log("Query_bill_Success");
       const apiUrl = '/api/user/query/bill';
       const params = {
-        user_id: this.user_id2,
+        user_id: getToken(),
         bill_id: this.bill_id
       };
       axios(
@@ -300,7 +292,7 @@ export default {
       console.log("Query_User_info_Success");
       const apiUrl = '/api/user/query/profile';
       const params = {
-        user_id: this.user_id3,
+        user_id: getToken(),
       };
       axios.get(apiUrl, { params })// 无法使用则修改为 data: params
       .then(response => {
@@ -316,7 +308,8 @@ export default {
             return {
               id: item.id,
               date: item.date,
-              cost: item.cost
+              cost: item.cost,
+              car_id : item.car,
             };
           })
           this.tableData = [

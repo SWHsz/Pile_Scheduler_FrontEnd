@@ -5,16 +5,10 @@
           <!-- 表单 -->
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-col :span = "3">
-            <el-input v-model="user_id" placeholder="请输入user_id" style="width: 100%; display: inline-block;"></el-input>
-          </el-col>
-          <el-col :span = "3">
             <el-input v-model="car_id" placeholder="请输入car_id" style="width: 100%; display: inline-block;"></el-input>
           </el-col>  
           <el-col :span = "3">
               <el-button type="primary" @click="Query_Charge_Detail()" style="display: inline-block;">查询充电详情</el-button>
-          </el-col>
-          <el-col :span = "3">
-            <el-input v-model="user_id2" placeholder="请输入用户id" style="width: 100%"></el-input>
           </el-col>
           <el-col :span = "3">
               <el-button type="primary" @click="Query_Request()">查询充电请求</el-button>
@@ -80,6 +74,7 @@
   </style>  
   <script type="text/ecmascript-6">
   import axios from 'axios';
+  import { getToken } from '@/utils/auth';
   export default {
     data () {
       return {
@@ -133,7 +128,7 @@
         console.log("Query_Charge_Detail_Success");
         const apiUrl = '/api/user/query/detail';
         const params = {
-          user_id: this.user_id,
+          user_id: getToken(),
           car_id: this.car_id
         };
         axios.get(apiUrl, { params })// 无法使用则修改为 data: params
@@ -174,7 +169,7 @@
         console.log("Query_Request_Success");
         const apiUrl = '/api/user/query/request';
         const params = {
-          user_id: this.user_id2,
+          user_id: getToken(),
         };
         axios.get(apiUrl, { params })// 无法使用则修改为 data: params
         .then(response => {
